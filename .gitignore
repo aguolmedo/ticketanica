@@ -2,12 +2,12 @@
 
 .idea/
 
-./ticketanicav2/.vs/
+ticketanicav2/.vs/
 
-./ticketanicav2/[Bb]in/
-./ticketanicav2/[Oo]bj/
+ticketanicav2/[Bb]in/
+ticketanicav2/[Oo]bj/
 
-./ticketanicav2/[Dd]ebug/
-./ticketanicav2/[Dd]ebugPublic/
-./ticketanicav2/[Rr]elease/
-./ticketanicav2/[Rr]eleases/
+ticketanicav2/[Dd]ebug/
+ticketanicav2/[Dd]ebugPublic/
+ticketanicav2/[Rr]elease/
+ticketanicav2/[Rr]eleases/
