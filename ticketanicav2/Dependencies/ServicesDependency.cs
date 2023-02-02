@@ -6,6 +6,6 @@ public static class ServicesDependency
 {
     public static void AddServiceDependency(this IServiceCollection services)
     {
-        services.AddSingleton<EventosService>();
+        services.AddSingleton<EventoService>();
     }
 }

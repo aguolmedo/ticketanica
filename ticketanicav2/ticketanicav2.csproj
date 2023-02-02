@@ -7,12 +7,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="QRCoder" Version="1.4.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+      <Compile Remove="Helpers\**" />
+      <Content Remove="Helpers\**" />
+      <EmbeddedResource Remove="Helpers\**" />
+      <None Remove="Helpers\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Helpers" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+        <PackageReference Include="QRCoder" Version="1.4.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Logic\" />
     </ItemGroup>
 
 </Project>

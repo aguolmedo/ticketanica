@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ticketanicav2.DataLayer;
 using ticketanicav2.Logic;
-using ticketanicav2.Models;
 
 namespace ticketanicav2.Controllers;
 
@@ -8,31 +8,26 @@ namespace ticketanicav2.Controllers;
 [Route("evento")]
 public class EventoController : ControllerBase
 {
-    private readonly EventosService _eventosService;
+    private readonly TicketanicaDbContext _ticketanicaDb;
 
-    public EventoController(EventosService eventoService)
+    public EventoController(TicketanicaDbContext ticketanicaDb)
     {
-        _eventosService = eventoService;
+        _ticketanicaDb = ticketanicaDb;
     }
 
-    [HttpGet("todos")]
+    [HttpGet("all")]
     public ActionResult<List<Evento>> ObtenerEventos()
     {
-        var listaEventos = _eventosService.Eventos;
-        
-        return Ok(listaEventos);
+        return Ok(_ticketanicaDb.Eventos.ToList());
     }
 
-    [HttpPost("crear")]
-    public ActionResult<Evento> CrearEventos([FromBody] Evento evento)
-    {
-        var eventoCreado = _eventosService.CrearEvento(evento.Nombre,evento.Artista, evento.Direccion, evento.CapacidadMaxima);
-
-        return Ok(eventoCreado);
-    }
-    
-    
-    
-    
 
 }
+
+
+
+
+
+
+
+

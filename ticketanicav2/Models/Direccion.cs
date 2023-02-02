@@ -7,5 +7,7 @@ public class Direccion
     public string NombreCalle { get; set; }
 
     public string NumeroCalle { get; set; }
-    
+
+    public string NombreLocal { get; set; }
+
 }
