@@ -1,1 +1,13 @@
 ﻿.idea
+
+.idea/
+
+.vs/
+
+[Bb]in/
+[Oo]bj/
+
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
