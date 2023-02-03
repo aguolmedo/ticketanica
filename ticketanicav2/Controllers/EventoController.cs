@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ticketanicav2.DataLayer;
-using ticketanicav2.Logic;
+using Newtonsoft.Json;
 using ticketanicav2.Logic.Interfaces;
 using Evento = ticketanicav2.Models.Evento;
 
@@ -20,7 +19,9 @@ public class EventoController : ControllerBase
     [HttpGet("all")]
     public ActionResult<List<Evento>> ObtenerEventos()
     {
-        return Ok(_eventoService.GetAll());
+        var listaEventos = _eventoService.GetAll();
+        
+        return Ok(listaEventos);
     }
 
 

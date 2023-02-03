@@ -2,15 +2,15 @@
 
 public class Evento
 {
-    private int IdEvento { get; set; }
-    private string Nombre { get; set; }
+    public int IdEvento { get; set; }
+    public string Nombre { get; set; }
 
-    private string Artista { get; set; }
-    private HashSet<Entrada> Entradas { get; set; }
+    public string Artista { get; set; }
+    public HashSet<Entrada> Entradas { get; set; }
 
-    private Direccion Direccion { get; set; }
+    public Direccion Direccion { get; set; }
 
-    private int CapacidadMaxima { get; set; }
+    public int CapacidadMaxima { get; set; }
 
 
     public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima)

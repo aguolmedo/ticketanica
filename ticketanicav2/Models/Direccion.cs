@@ -10,12 +10,12 @@ public class Direccion
         NombreLocal = nombreLocal;
     }
 
-    private string NombreCiudad { get; set; }
+    public string NombreCiudad { get; set; }
 
-    private string NombreCalle { get; set; }
+    public string NombreCalle { get; set; }
 
-    private int? NumeroCalle { get; set; }
+    public int? NumeroCalle { get; set; }
 
-    private string NombreLocal { get; set; }
+    public string NombreLocal { get; set; }
 
 }
