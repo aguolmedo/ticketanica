@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ticketanicav2.DataLayer;
 
@@ -28,6 +29,7 @@ public partial class TicketanicaDbContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=localhost;user id=root;password=colacao2;database=ticketanica", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.10.2-mariadb"));
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,6 +91,9 @@ public partial class TicketanicaDbContext : DbContext
             entity.Property(e => e.ArtistaName)
                 .HasMaxLength(45)
                 .HasColumnName("artista_name");
+            entity.Property(e => e.CapacidadMaxima)
+                .HasColumnType("int(11)")
+                .HasColumnName("capacidad_maxima");
             entity.Property(e => e.EventoName)
                 .HasMaxLength(45)
                 .HasColumnName("evento_name");

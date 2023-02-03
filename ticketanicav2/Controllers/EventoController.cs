@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ticketanicav2.DataLayer;
 using ticketanicav2.Logic;
+using ticketanicav2.Logic.Interfaces;
+using Evento = ticketanicav2.Models.Evento;
 
 namespace ticketanicav2.Controllers;
 
@@ -8,17 +10,17 @@ namespace ticketanicav2.Controllers;
 [Route("evento")]
 public class EventoController : ControllerBase
 {
-    private readonly TicketanicaDbContext _ticketanicaDb;
+    private readonly IEventoService _eventoService;
 
-    public EventoController(TicketanicaDbContext ticketanicaDb)
+    public EventoController(IEventoService eventoService)
     {
-        _ticketanicaDb = ticketanicaDb;
+        _eventoService = eventoService;
     }
 
     [HttpGet("all")]
     public ActionResult<List<Evento>> ObtenerEventos()
     {
-        return Ok(_ticketanicaDb.Eventos.ToList());
+        return Ok(_eventoService.GetAll());
     }
 
 

@@ -2,12 +2,20 @@
 
 public class Direccion
 {
-    public string NombreCiudad { get; set; }
+    public Direccion(string nombreCiudad, string nombreCalle, int numeroCalle, string nombreLocal)
+    {
+        NombreCiudad = nombreCiudad;
+        NombreCalle = nombreCalle;
+        NumeroCalle = numeroCalle;
+        NombreLocal = nombreLocal;
+    }
 
-    public string NombreCalle { get; set; }
+    private string NombreCiudad { get; set; }
 
-    public string NumeroCalle { get; set; }
+    private string NombreCalle { get; set; }
 
-    public string NombreLocal { get; set; }
+    private int? NumeroCalle { get; set; }
+
+    private string NombreLocal { get; set; }
 
 }

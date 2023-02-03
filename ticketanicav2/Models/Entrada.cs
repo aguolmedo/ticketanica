@@ -4,9 +4,9 @@ namespace ticketanicav2.Models;
 
 public class Entrada
 {
-    public int Codigo { get; set; }
+    private int Codigo { get; set; }
 
-    public bool Usada { get; set; }
+    private bool Usada { get; set; }
 
     public Entrada()
     {

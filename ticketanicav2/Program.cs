@@ -17,7 +17,10 @@ builder.Services.AddDbContext<TicketanicaDbContext>(_ =>
     _.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+
+
 builder.Services.AddServiceDependency();
+builder.Services.BindsServices();
 
 
 
