@@ -13,5 +13,7 @@ public partial class User
 
     public DateTime CreatedAt { get; set; }
 
+    public virtual ICollection<Evento> Eventos { get; } = new List<Evento>();
+
     public virtual ICollection<ResetToken> ResetTokens { get; } = new List<ResetToken>();
 }

@@ -19,9 +19,16 @@ public class EventoController : ControllerBase
     [HttpGet("all")]
     public ActionResult<List<Evento>> ObtenerEventos()
     {
-        var listaEventos = _eventoService.GetAll();
-        
-        return Ok(listaEventos);
+        try
+        {
+            var eventos = _eventoService.GetAll();
+            return eventos is not null ? Ok(eventos) : Problem("Que mierda pasó ahora..");
+        }
+        catch (Exception e)
+        {
+
+            return Problem(e.ToString(),statusCode:500);
+        }
     }
 
 

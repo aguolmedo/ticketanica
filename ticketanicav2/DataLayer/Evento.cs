@@ -17,7 +17,11 @@ public partial class Evento
 
     public int? CapacidadMaxima { get; set; }
 
+    public int Organizador { get; set; }
+
     public virtual Direccione IdDireccionNavigation { get; set; } = null!;
 
     public virtual Entrada? IdEntradaNavigation { get; set; }
+
+    public virtual User OrganizadorNavigation { get; set; } = null!;
 }
