@@ -22,12 +22,27 @@ public class EventoController : ControllerBase
         try
         {
             var eventos = _eventoService.GetAll();
-            return eventos is not null ? Ok(eventos) : Problem("Que mierda pasó ahora..");
+            return eventos is not null ? 
+                Ok(eventos) : Problem("Que mierda pasó ahora..");
         }
         catch (Exception e)
         {
 
-            return Problem(e.ToString(),statusCode:500);
+            return Problem(e.ToString(), statusCode: 500);
+        }
+    }
+
+    [HttpPost("crear")]
+    public ActionResult<string> CrearEvento(Evento evento)
+    {
+        try
+        {
+            var newEventId = _eventoService.AddEvento(evento);
+            return Ok("Se creo un evento con Id { " + newEventId + " }");
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.ToString());
         }
     }
 

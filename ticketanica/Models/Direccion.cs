@@ -10,6 +10,8 @@ public class Direccion
         NombreLocal = nombreLocal;
     }
 
+    public Direccion() {}
+
     public string NombreCiudad { get; set; }
 
     public string NombreCalle { get; set; }
@@ -17,5 +19,7 @@ public class Direccion
     public int? NumeroCalle { get; set; }
 
     public string NombreLocal { get; set; }
+    
+    
 
 }

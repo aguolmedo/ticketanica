@@ -6,23 +6,26 @@ public class Evento
     public string Nombre { get; set; }
 
     public string Artista { get; set; }
-    public HashSet<Entrada> Entradas { get; set; }
+    public HashSet<Entrada>? Entradas { get; set; }
 
     public Direccion Direccion { get; set; }
 
     public int CapacidadMaxima { get; set; }
 
+    public Organizador Organizador { get; set; }
 
-    public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima)
+
+    public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {
         Artista = artista;
         Nombre = nombre;
         Direccion = direccion;
         CapacidadMaxima = capacidadMaxima;
         Entradas = new HashSet<Entrada>();
+        Organizador = organizador;
     }
     
-    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima)
+    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {
         IdEvento = idEvento;
         Artista = artista;
@@ -30,7 +33,10 @@ public class Evento
         Direccion = direccion;
         CapacidadMaxima = capacidadMaxima;
         Entradas = new HashSet<Entrada>();
+        Organizador = organizador;
     }
+
+    public Evento() {}
 
     public Entrada generarEntrada()
     {

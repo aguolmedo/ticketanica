@@ -7,11 +7,11 @@ public partial class ResetToken
 {
     public int Id { get; set; }
 
-    public int UserId { get; set; }
+    public string UserEmail { get; set; } = null!;
 
     public string Token { get; set; } = null!;
 
     public DateTime ExpiresAt { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual User UserEmailNavigation { get; set; } = null!;
 }

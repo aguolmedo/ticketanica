@@ -13,4 +13,5 @@ public class Entrada
         Codigo = Convert.ToInt32(new Random().NextInt64());
         Usada = false;
     }
+    
 }
