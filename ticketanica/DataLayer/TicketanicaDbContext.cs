@@ -83,12 +83,18 @@ public partial class TicketanicaDbContext : DbContext
 
             entity.HasIndex(e => e.IdEntrada, "eventos_entradas_id_entrada_fk");
 
+            entity.HasIndex(e => e.EmailOrganizador, "eventos_users_email_fk");
+
             entity.Property(e => e.IdEvento)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_evento");
             entity.Property(e => e.ArtistaName)
                 .HasMaxLength(45)
                 .HasColumnName("artista_name");
+            entity.Property(e => e.CapacidadMaxima)
+                .HasColumnType("int(11)")
+                .HasColumnName("capacidad_maxima");
+            entity.Property(e => e.EmailOrganizador).HasColumnName("email_organizador");
             entity.Property(e => e.EventoName)
                 .HasMaxLength(45)
                 .HasColumnName("evento_name");
@@ -98,6 +104,10 @@ public partial class TicketanicaDbContext : DbContext
             entity.Property(e => e.IdEntrada)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_entrada");
+
+            entity.HasOne(d => d.EmailOrganizadorNavigation).WithMany(p => p.Eventos)
+                .HasForeignKey(d => d.EmailOrganizador)
+                .HasConstraintName("eventos_users_email_fk");
 
             entity.HasOne(d => d.IdDireccionNavigation).WithMany(p => p.Eventos)
                 .HasForeignKey(d => d.IdDireccion)
@@ -115,7 +125,7 @@ public partial class TicketanicaDbContext : DbContext
 
             entity.ToTable("reset_tokens");
 
-            entity.HasIndex(e => e.UserId, "user_id");
+            entity.HasIndex(e => e.UserEmail, "reset_tokens_users_email_fk");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -127,31 +137,27 @@ public partial class TicketanicaDbContext : DbContext
                 .HasMaxLength(64)
                 .IsFixedLength()
                 .HasColumnName("token");
-            entity.Property(e => e.UserId)
-                .HasColumnType("int(11)")
-                .HasColumnName("user_id");
+            entity.Property(e => e.UserEmail).HasColumnName("user_email");
 
-            entity.HasOne(d => d.User).WithMany(p => p.ResetTokens)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("reset_tokens_ibfk_1");
+            entity.HasOne(d => d.UserEmailNavigation).WithMany(p => p.ResetTokens)
+                .HasForeignKey(d => d.UserEmail)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("reset_tokens_users_email_fk");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.HasKey(e => e.Email).HasName("PRIMARY");
 
             entity.ToTable("users");
 
             entity.HasIndex(e => e.Email, "email").IsUnique();
 
-            entity.Property(e => e.Id)
-                .HasColumnType("int(11)")
-                .HasColumnName("id");
+            entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_at");
-            entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.Password)
                 .HasMaxLength(60)
                 .IsFixedLength()

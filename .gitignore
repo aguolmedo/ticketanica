@@ -2,12 +2,17 @@
 
 .idea/
 
-ticketanicav2/.vs/
+.vs
+.vs/
+ticketanica/.vs/
 
-ticketanicav2/[Bb]in/
-ticketanicav2/[Oo]bj/
+ticketanica/[Bb]in/
+ticketanica/[Oo]bj/
 
-ticketanicav2/[Dd]ebug/
-ticketanicav2/[Dd]ebugPublic/
-ticketanicav2/[Rr]elease/
-ticketanicav2/[Rr]eleases/
+ticketanica/[Dd]ebug/
+ticketanica/[Dd]ebugPublic/
+ticketanica/[Rr]elease/
+ticketanica/[Rr]eleases/
+
+TicketanicaTest/bin
+TicketanicaTest/obj
