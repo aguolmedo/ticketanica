@@ -8,5 +8,6 @@ public static class ServicesBinds
     public static void BindsServices(this IServiceCollection services)
     {
         services.AddScoped<IEventoService, EventoService>();
+        services.AddScoped<IUsersService, UserService>();
     }
 }
