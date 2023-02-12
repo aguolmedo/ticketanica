@@ -9,8 +9,6 @@ public partial class Evento
 
     public string EventoName { get; set; } = null!;
 
-    public int? IdEntrada { get; set; }
-
     public string? ArtistaName { get; set; }
 
     public int IdDireccion { get; set; }
@@ -21,7 +19,7 @@ public partial class Evento
 
     public virtual User? EmailOrganizadorNavigation { get; set; }
 
-    public virtual Direccione IdDireccionNavigation { get; set; } = null!;
+    public virtual ICollection<Entrada> Entrada { get; } = new List<Entrada>();
 
-    public virtual Entrada? IdEntradaNavigation { get; set; }
+    public virtual Direccione IdDireccionNavigation { get; set; } = null!;
 }

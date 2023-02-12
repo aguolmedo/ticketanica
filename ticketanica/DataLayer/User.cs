@@ -9,7 +9,7 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
-    public DateTime? CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public virtual ICollection<Evento> Eventos { get; } = new List<Evento>();
 

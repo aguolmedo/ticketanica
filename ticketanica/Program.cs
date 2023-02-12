@@ -18,11 +18,20 @@ builder.Services.AddDbContext<TicketanicaDbContext>(_ =>
     _.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
-
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddServiceDependency();
 builder.Services.BindsServices();
 
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".TicketanicaSession";
+    options.IdleTimeout = TimeSpan.FromSeconds(20);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 var app = builder.Build();
@@ -33,6 +42,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSession();
 
 app.UseHttpsRedirection();
 

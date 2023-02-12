@@ -42,7 +42,7 @@ public class EventoController : ControllerBase
         }
         catch (ArgumentException e)
         {
-            return BadRequest("User: "+ evento.Organizador.Email +" doesnt exist");
+            return BadRequest(e.ToString());
         }
     }
 

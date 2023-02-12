@@ -11,5 +11,7 @@ public partial class Entrada
 
     public bool Usada { get; set; }
 
-    public virtual ICollection<Evento> Eventos { get; } = new List<Evento>();
+    public int EventoId { get; set; }
+
+    public virtual Evento Evento { get; set; } = null!;
 }

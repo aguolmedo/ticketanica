@@ -4,15 +4,12 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>ticketanicav2</RootNamespace>
-    </PropertyGroup>
+        <RootNamespace>ticketanica</RootNamespace>
 
-    <ItemGroup>
-      <Compile Remove="Helpers\**" />
-      <Content Remove="Helpers\**" />
-      <EmbeddedResource Remove="Helpers\**" />
-      <None Remove="Helpers\**" />
-    </ItemGroup>
+    </PropertyGroup>
+      <PropertyGroup>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
@@ -30,5 +27,7 @@
     <ItemGroup>
       <Folder Include="Logic\" />
     </ItemGroup>
+
+    
 
 </Project>

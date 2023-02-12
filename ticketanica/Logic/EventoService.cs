@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ticketanicav2.DataLayer;
 using ticketanicav2.Logic.Interfaces;
@@ -11,9 +12,12 @@ namespace ticketanicav2.Logic;
 public  class EventoService :IEventoService
 {
     private readonly TicketanicaDbContext _ticketanicaDb;
+
+    private readonly IHttpContextAccessor _httpContextAccessor;
     
-    public EventoService(TicketanicaDbContext ticketanicaDb)
+    public EventoService(TicketanicaDbContext ticketanicaDb, IHttpContextAccessor httpContextAccessor)
     {
+        _httpContextAccessor = httpContextAccessor;
         _ticketanicaDb = ticketanicaDb;
     }
 
@@ -39,7 +43,13 @@ public  class EventoService :IEventoService
 
     public int AddEvento(Evento evento)
     {
-        var userDb = _ticketanicaDb.Users.Find(evento.Organizador.Email) ?? throw new ArgumentException("El usuario no existe.");
+        if (!_httpContextAccessor.HttpContext.Session.TryGetValue("usuario", out var value))
+            throw new ArgumentException("No existe ninguna sesión Activa");
+        
+        var userSession = Encoding.UTF8.GetString(value);
+        var userDb = _ticketanicaDb.Users.Find(userSession) ?? throw new ArgumentException("El usuario no existe.");
+        
+
         var direccionDb = _ticketanicaDb.Direcciones.FirstOrDefault(d => 
                               d.CalleName == evento.Direccion.NombreCalle &&
                               d.CalleNro == evento.Direccion.NumeroCalle &&

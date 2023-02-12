@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text;
+
 namespace ticketanicav2.Models;
 
 public class Organizador
@@ -13,6 +16,5 @@ public class Organizador
     }
 
     public Organizador() {}
-
-
+    
 }

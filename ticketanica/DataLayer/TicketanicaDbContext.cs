@@ -64,13 +64,23 @@ public partial class TicketanicaDbContext : DbContext
 
             entity.ToTable("entradas");
 
+            entity.HasIndex(e => e.EventoId, "entradas_eventos_id_evento_fk");
+
             entity.Property(e => e.IdEntrada)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_entrada");
             entity.Property(e => e.CodigoQr)
                 .HasMaxLength(45)
                 .HasColumnName("codigoQR");
+            entity.Property(e => e.EventoId)
+                .HasColumnType("int(11)")
+                .HasColumnName("evento_id");
             entity.Property(e => e.Usada).HasColumnName("usada");
+
+            entity.HasOne(d => d.Evento).WithMany(p => p.Entrada)
+                .HasForeignKey(d => d.EventoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("entradas_eventos_id_evento_fk");
         });
 
         modelBuilder.Entity<Evento>(entity =>
@@ -80,8 +90,6 @@ public partial class TicketanicaDbContext : DbContext
             entity.ToTable("eventos");
 
             entity.HasIndex(e => e.IdDireccion, "eventos_direcciones_id_direccion_fk");
-
-            entity.HasIndex(e => e.IdEntrada, "eventos_entradas_id_entrada_fk");
 
             entity.HasIndex(e => e.EmailOrganizador, "eventos_users_email_fk");
 
@@ -101,9 +109,6 @@ public partial class TicketanicaDbContext : DbContext
             entity.Property(e => e.IdDireccion)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_direccion");
-            entity.Property(e => e.IdEntrada)
-                .HasColumnType("int(11)")
-                .HasColumnName("id_entrada");
 
             entity.HasOne(d => d.EmailOrganizadorNavigation).WithMany(p => p.Eventos)
                 .HasForeignKey(d => d.EmailOrganizador)
@@ -113,10 +118,6 @@ public partial class TicketanicaDbContext : DbContext
                 .HasForeignKey(d => d.IdDireccion)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("eventos_direcciones_id_direccion_fk");
-
-            entity.HasOne(d => d.IdEntradaNavigation).WithMany(p => p.Eventos)
-                .HasForeignKey(d => d.IdEntrada)
-                .HasConstraintName("eventos_entradas_id_entrada_fk");
         });
 
         modelBuilder.Entity<ResetToken>(entity =>

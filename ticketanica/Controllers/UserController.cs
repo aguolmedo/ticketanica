@@ -29,4 +29,19 @@ public class UserController : ControllerBase
             return BadRequest(e);
         }
     }
+
+    [HttpPost("login")]
+    public ActionResult<string> IniciarSesion(Organizador user)
+    {
+        try
+        {
+            return _usersService.IniciarSesion(user) ? 
+                Ok("Se inicio sesion con el usuario: " + user.Email + " correctamente.") : 
+                Problem("ni puta idea q mierda pasó");
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(Convert.ToString(e));
+        }
+    }
 }
