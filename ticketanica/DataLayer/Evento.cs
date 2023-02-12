@@ -13,7 +13,7 @@ public partial class Evento
 
     public int IdDireccion { get; set; }
 
-    public int? CapacidadMaxima { get; set; }
+    public int CapacidadMaxima { get; set; }
 
     public string? EmailOrganizador { get; set; }
 

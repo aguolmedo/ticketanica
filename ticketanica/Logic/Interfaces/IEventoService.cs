@@ -5,10 +5,11 @@ namespace ticketanicav2.Logic.Interfaces;
 public interface IEventoService
 {
     public List<Evento> GetAll();
-    
-    public int AddEvento(Evento evento);
 
-    public bool ModifyEvento(int idEvento);
+    public Evento GetById(int id);
+
+    public int AddEvento(Evento evento);
     
+    public bool ModifyEvento(int idEvento);
     
 }

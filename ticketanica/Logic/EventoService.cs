@@ -4,17 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using ticketanicav2.DataLayer;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
+using Entrada = ticketanicav2.Models.Entrada;
 using Evento = ticketanicav2.Models.Evento;
 using User = ticketanicav2.DataLayer.User;
 
 namespace ticketanicav2.Logic;
 
-public  class EventoService :IEventoService
+public class EventoService : IEventoService
 {
     private readonly TicketanicaDbContext _ticketanicaDb;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
-    
+
     public EventoService(TicketanicaDbContext ticketanicaDb, IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -32,13 +33,61 @@ public  class EventoService :IEventoService
         foreach (var evento in eventosDb)
         {
             var organizadorModel = new Organizador(evento.EmailOrganizadorNavigation.Email);
-            var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName, evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro), evento.IdDireccionNavigation.LocalName);
-            var eventoModel = new Evento(evento.IdEvento,evento.EventoName, evento.ArtistaName, direccionModel, Convert.ToInt32(evento.CapacidadMaxima),organizadorModel);
-            
+            var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName,
+                evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
+                evento.IdDireccionNavigation.LocalName);
+            var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
+                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel);
+
             listaEventos.Add(eventoModel);
         }
 
         return listaEventos;
+    }
+
+    public Evento GetById(int id)
+    {
+        var eventoDb = _ticketanicaDb.Eventos
+            .Include(d => d.IdDireccionNavigation)
+            .FirstOrDefault(e => e.IdEvento == id);
+        
+        if (eventoDb is null)
+            throw new ArgumentException("No existe evento con ese Id");
+
+        var entradas = new HashSet<Entrada>();
+        foreach (var entrada in eventoDb.Entrada)
+        {
+            var entradaModel = new Entrada()
+            {
+                IdEntrada = entrada.IdEntrada,
+                Codigo = entrada.CodigoQr,
+                Usada = entrada.Usada
+            };
+            entradas.Add(entradaModel);
+        }
+
+        var direccionModel = new Direccion()
+        {
+            NombreCiudad = eventoDb.IdDireccionNavigation.CiudadName,
+            NombreCalle = eventoDb.IdDireccionNavigation.CalleName,
+            NombreLocal = eventoDb.IdDireccionNavigation.LocalName,
+            NumeroCalle = eventoDb.IdDireccionNavigation.CalleNro,
+        };
+
+
+        return new Evento()
+        {
+            IdEvento = eventoDb.IdEvento,
+            Nombre = eventoDb.EventoName,
+            Artista = eventoDb.ArtistaName,
+            Entradas = entradas,
+            Direccion = direccionModel,
+            CapacidadMaxima = eventoDb.CapacidadMaxima,
+            Organizador = new Organizador()
+            {
+                Email = eventoDb.EmailOrganizador
+            }
+        };
     }
 
     public int AddEvento(Evento evento)

@@ -46,6 +46,19 @@ public class EventoController : ControllerBase
         }
     }
 
+    [HttpGet("id")]
+    public ActionResult<Evento> GetById(int id)
+    {
+        try
+        {
+            return Ok(_eventoService.GetById(id));
+        }
+        catch (ArgumentException e)
+        {
+            return BadRequest(e.ToString());
+        }
+    }
+
 
 }
 

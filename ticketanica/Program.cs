@@ -21,7 +21,6 @@ builder.Services.AddDbContext<TicketanicaDbContext>(_ =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddServiceDependency();
 builder.Services.BindsServices();
 
 
