@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using ticketanicav2.DataLayer;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
 

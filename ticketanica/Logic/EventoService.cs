@@ -1,12 +1,10 @@
-﻿
-using System.Text;
+﻿using System.Text;
 using Microsoft.EntityFrameworkCore;
-using ticketanicav2.DataLayer;
+using ticketanica.DataLayer;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
 using Entrada = ticketanicav2.Models.Entrada;
 using Evento = ticketanicav2.Models.Evento;
-using User = ticketanicav2.DataLayer.User;
 
 namespace ticketanicav2.Logic;
 
@@ -49,6 +47,7 @@ public class EventoService : IEventoService
     {
         var eventoDb = _ticketanicaDb.Eventos
             .Include(d => d.IdDireccionNavigation)
+            .Include(e => e.Entrada)
             .FirstOrDefault(e => e.IdEvento == id);
         
         if (eventoDb is null)
@@ -60,8 +59,9 @@ public class EventoService : IEventoService
             var entradaModel = new Entrada()
             {
                 IdEntrada = entrada.IdEntrada,
-                Codigo = entrada.CodigoQr,
-                Usada = entrada.Usada
+                CodigoQr = entrada.CodigoQr,
+                Usada = entrada.Usada,
+                FechaCreacion = entrada.CreatedAt
             };
             entradas.Add(entradaModel);
         }
@@ -112,7 +112,7 @@ public class EventoService : IEventoService
                               LocalName = evento.Direccion.NombreLocal
                           };
 
-        var eventoDbModel = new DataLayer.Evento
+        var eventoDbModel = new ticketanica.DataLayer.Evento
         {
             EventoName = evento.Nombre,
             ArtistaName = evento.Artista,
@@ -131,9 +131,8 @@ public class EventoService : IEventoService
         throw new NotImplementedException();
     }
 
-    
-
-    
-
-
+    public int generarEntrada(int idEvento)
+    {
+        return 9;
+    }
 }

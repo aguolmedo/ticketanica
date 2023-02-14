@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ticketanicav2.DataLayer;
+namespace ticketanica.DataLayer;
 
 public partial class Direccione
 {

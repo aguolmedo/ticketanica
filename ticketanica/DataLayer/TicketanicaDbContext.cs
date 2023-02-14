@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace ticketanicav2.DataLayer;
+namespace ticketanica.DataLayer;
 
 public partial class TicketanicaDbContext : DbContext
 {
@@ -72,6 +72,10 @@ public partial class TicketanicaDbContext : DbContext
             entity.Property(e => e.CodigoQr)
                 .HasMaxLength(45)
                 .HasColumnName("codigoQR");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("current_timestamp()")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_at");
             entity.Property(e => e.EventoId)
                 .HasColumnType("int(11)")
                 .HasColumnName("evento_id");
@@ -160,7 +164,7 @@ public partial class TicketanicaDbContext : DbContext
                 .HasColumnType("timestamp")
                 .HasColumnName("created_at");
             entity.Property(e => e.Password)
-                .HasMaxLength(60)
+                .HasMaxLength(120)
                 .IsFixedLength()
                 .HasColumnName("password");
         });

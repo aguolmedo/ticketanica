@@ -11,5 +11,7 @@ public interface IEventoService
     public int AddEvento(Evento evento);
     
     public bool ModifyEvento(int idEvento);
-    
+
+    public int generarEntrada(int idEvento);
+
 }

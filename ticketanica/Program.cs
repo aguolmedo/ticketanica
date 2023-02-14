@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using ticketanicav2.DataLayer;
+using ticketanica.DataLayer;
 using ticketanicav2.Dependencies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +27,7 @@ builder.Services.BindsServices();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".TicketanicaSession";
-    options.IdleTimeout = TimeSpan.FromSeconds(20);
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
