@@ -12,6 +12,5 @@ public interface IEventoService
     
     public bool ModifyEvento(int idEvento);
 
-    public int generarEntrada(int idEvento);
 
 }

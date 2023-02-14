@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Security.Authentication;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ticketanica.DataLayer;
 using ticketanicav2.Logic.Interfaces;
@@ -53,7 +55,7 @@ public class EventoService : IEventoService
         if (eventoDb is null)
             throw new ArgumentException("No existe evento con ese Id");
 
-        var entradas = new HashSet<Entrada>();
+        var entradas = new Dictionary<string, Entrada>();
         foreach (var entrada in eventoDb.Entrada)
         {
             var entradaModel = new Entrada()
@@ -63,7 +65,7 @@ public class EventoService : IEventoService
                 Usada = entrada.Usada,
                 FechaCreacion = entrada.CreatedAt
             };
-            entradas.Add(entradaModel);
+            entradas.Add(entradaModel.CodigoQr,entradaModel);
         }
 
         var direccionModel = new Direccion()
@@ -96,7 +98,7 @@ public class EventoService : IEventoService
             throw new ArgumentException("No existe ninguna sesión Activa");
         
         var userSession = Encoding.UTF8.GetString(value);
-        var userDb = _ticketanicaDb.Users.Find(userSession) ?? throw new ArgumentException("El usuario no existe.");
+        var userDb = _ticketanicaDb.Users.Find(userSession);
         
 
         var direccionDb = _ticketanicaDb.Direcciones.FirstOrDefault(d => 
@@ -131,8 +133,5 @@ public class EventoService : IEventoService
         throw new NotImplementedException();
     }
 
-    public int generarEntrada(int idEvento)
-    {
-        return 9;
-    }
+  
 }

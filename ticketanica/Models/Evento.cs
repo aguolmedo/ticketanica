@@ -6,7 +6,7 @@ public class Evento
     public string Nombre { get; set; }
 
     public string Artista { get; set; }
-    public HashSet<Entrada>? Entradas { get; set; }
+    public Dictionary<string,Entrada>? Entradas { get; set; }
 
     public Direccion Direccion { get; set; }
 
@@ -21,7 +21,7 @@ public class Evento
         Nombre = nombre;
         Direccion = direccion;
         CapacidadMaxima = capacidadMaxima;
-        Entradas = new HashSet<Entrada>();
+        Entradas = new Dictionary<string,Entrada>();
         Organizador = organizador;
     }
     
@@ -32,19 +32,12 @@ public class Evento
         Nombre = nombre;
         Direccion = direccion;
         CapacidadMaxima = capacidadMaxima;
-        Entradas = new HashSet<Entrada>();
+        Entradas = new Dictionary<string,Entrada>();
         Organizador = organizador;
     }
-
+    
     public Evento() {}
-
-    public Entrada generarEntrada()
-    {
-        var newEntrada = new Entrada();
-        Entradas.Add(newEntrada);
-        return newEntrada;
-    }
-
+    
 
 }
 

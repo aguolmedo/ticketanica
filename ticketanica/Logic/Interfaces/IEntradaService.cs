@@ -4,7 +4,7 @@ public interface IEntradaService
 {
     public bool GenerarEntrada(int idEvento);
 
-    public bool ValidarEntrada(string codigoQr);
+    public bool ValidarEntrada(int idEvento, string codigoQr);
 
 
 }

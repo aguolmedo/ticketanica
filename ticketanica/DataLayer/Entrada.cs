@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ticketanica.DataLayer;
 
 public partial class Entrada
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdEntrada { get; set; }
 
     public string? CodigoQr { get; set; } = null!;

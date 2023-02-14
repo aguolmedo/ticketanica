@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ticketanica.DataLayer;
 
 public partial class Evento
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdEvento { get; set; }
 
     public string EventoName { get; set; } = null!;

@@ -24,8 +24,7 @@ public class UserController : ControllerBase
         }
         catch (ArgumentException e)
         {
-            Console.WriteLine(e);
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 
@@ -40,7 +39,7 @@ public class UserController : ControllerBase
         }
         catch (ArgumentException e)
         {
-            return BadRequest(Convert.ToString(e));
+            return BadRequest(e.Message);
         }
     }
 }

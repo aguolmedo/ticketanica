@@ -28,7 +28,7 @@ public class EventoController : ControllerBase
         catch (Exception e)
         {
 
-            return Problem(e.ToString(), statusCode: 500);
+            return Problem(e.Message, statusCode: 500);
         }
     }
 
@@ -42,7 +42,7 @@ public class EventoController : ControllerBase
         }
         catch (ArgumentException e)
         {
-            return BadRequest(e.ToString());
+            return BadRequest(e.Message);
         }
     }
 
@@ -55,7 +55,7 @@ public class EventoController : ControllerBase
         }
         catch (ArgumentException e)
         {
-            return BadRequest(e.ToString());
+            return BadRequest(e.Message);
         }
     }
 

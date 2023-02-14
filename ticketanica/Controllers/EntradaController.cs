@@ -17,7 +17,7 @@ public class EntradaController : ControllerBase
     }
 
     [HttpPost("generar")]
-    public ActionResult<bool> GenerarEntrada(int idEvento)
+    public ActionResult<string> GenerarEntrada(int idEvento)
     {
         try
         {
@@ -27,7 +27,21 @@ public class EntradaController : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.ToString());
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpPost("validar")]
+    public ActionResult<string> ValidarEntrada(int idEvento, string CodigoQr)
+    {
+        try
+        {
+            if (_entradaService.ValidarEntrada(idEvento, CodigoQr)) return Ok("Acceso permitido");
+            return BadRequest("Acceso Denegado - No existe Ninguna entrada con ese código");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 
