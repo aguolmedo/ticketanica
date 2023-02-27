@@ -27,13 +27,13 @@ public partial class TicketanicaDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;user id=root;password=colacao2;database=ticketanica", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.10.2-mariadb"));
+        => optionsBuilder.UseMySql("server=localhost;user id=admin;password=password;database=ticketanica", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.11.2-mariadb"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .UseCollation("latin1_swedish_ci")
-            .HasCharSet("latin1");
+            .UseCollation("utf8mb4_unicode_ci")
+            .HasCharSet("utf8mb4");
 
         modelBuilder.Entity<Direccione>(entity =>
         {
@@ -70,7 +70,7 @@ public partial class TicketanicaDbContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("id_entrada");
             entity.Property(e => e.CodigoQr)
-                .HasMaxLength(45)
+                .HasMaxLength(120)
                 .HasColumnName("codigoQR");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("current_timestamp()")
@@ -83,7 +83,6 @@ public partial class TicketanicaDbContext : DbContext
 
             entity.HasOne(d => d.Evento).WithMany(p => p.Entrada)
                 .HasForeignKey(d => d.EventoId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("entradas_eventos_id_evento_fk");
         });
 
@@ -107,6 +106,12 @@ public partial class TicketanicaDbContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("capacidad_maxima");
             entity.Property(e => e.EmailOrganizador).HasColumnName("email_organizador");
+            entity.Property(e => e.EventoFecha)
+                .HasColumnType("datetime")
+                .HasColumnName("evento_fecha");
+            entity.Property(e => e.EventoImg)
+                .HasMaxLength(120)
+                .HasColumnName("evento_img");
             entity.Property(e => e.EventoName)
                 .HasMaxLength(45)
                 .HasColumnName("evento_name");

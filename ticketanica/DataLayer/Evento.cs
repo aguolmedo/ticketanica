@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ticketanica.DataLayer;
 
 public partial class Evento
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int IdEvento { get; set; }
 
     public string EventoName { get; set; } = null!;
@@ -18,6 +16,10 @@ public partial class Evento
     public int CapacidadMaxima { get; set; }
 
     public string? EmailOrganizador { get; set; }
+
+    public DateTime EventoFecha { get; set; }
+
+    public string? EventoImg { get; set; }
 
     public virtual User? EmailOrganizadorNavigation { get; set; }
 
