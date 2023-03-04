@@ -13,7 +13,8 @@ public class Evento
     public int CapacidadMaxima { get; set; }
 
     public Organizador? Organizador { get; set; }
-
+    
+    public string img_evento {get; set;} 
 
     public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {
