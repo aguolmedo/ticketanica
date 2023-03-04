@@ -14,7 +14,7 @@ public class Evento
 
     public Organizador? Organizador { get; set; }
     
-    public string img_evento {get; set;} 
+    public IFormFile ImgEvento {get; set;} 
 
     public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {
