@@ -2,7 +2,7 @@
 
 public class Evento
 {
-    public int IdEvento { get; set; }
+    public int? IdEvento { get; set; }
     public string Nombre { get; set; }
 
     public string Artista { get; set; }
@@ -26,7 +26,7 @@ public class Evento
         Organizador = organizador;
     }
     
-    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
+    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador, IFormFile imgEvento)
     {
         IdEvento = idEvento;
         Artista = artista;
@@ -35,6 +35,7 @@ public class Evento
         CapacidadMaxima = capacidadMaxima;
         Entradas = new Dictionary<string,Entrada>();
         Organizador = organizador;
+        ImgEvento = imgEvento;
     }
     
     public Evento() {}

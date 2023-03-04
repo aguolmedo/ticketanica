@@ -33,7 +33,7 @@ public class EventoController : ControllerBase
     }
 
     [HttpPost("crear")]
-    public ActionResult<string> CrearEvento(Evento evento)
+    public ActionResult<string> CrearEvento([FromForm] Evento evento)
     {
         try
         {

@@ -11,7 +11,7 @@ public partial class Entrada
 
     public bool Usada { get; set; }
 
-    public int EventoId { get; set; }
+    public int? EventoId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

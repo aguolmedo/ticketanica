@@ -16,6 +16,8 @@ public class EventoService : IEventoService
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private readonly string img_path = "/var/www/ticketanica/img/";
+
     public EventoService(TicketanicaDbContext ticketanicaDb, IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -36,8 +38,10 @@ public class EventoService : IEventoService
             var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName,
                 evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
                 evento.IdDireccionNavigation.LocalName);
+            var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
+            var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image",img_path + evento.EventoImg );
             var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
-                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel);
+                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel,imgEvento);
 
             listaEventos.Add(eventoModel);
         }
@@ -96,7 +100,12 @@ public class EventoService : IEventoService
     {
         if (!_httpContextAccessor.HttpContext.Session.TryGetValue("usuario", out var value))
             throw new ArgumentException("No existe ninguna sesión Activa");
-        
+        if (evento.ImgEvento is { Length: > 0 })
+        {
+            using var fileStream = new FileStream(img_path, FileMode.Create);
+            evento.ImgEvento.CopyTo(fileStream);
+        }
+
         var userSession = Encoding.UTF8.GetString(value);
         var userDb = _ticketanicaDb.Users.Find(userSession);
         
@@ -120,8 +129,12 @@ public class EventoService : IEventoService
             ArtistaName = evento.Artista,
             CapacidadMaxima = evento.CapacidadMaxima,
             IdDireccionNavigation = direccionDb,
-            EmailOrganizadorNavigation = userDb
+            EmailOrganizadorNavigation = userDb,
+            EventoImg = evento.ImgEvento.FileName
         };
+        
+        
+        
 
         _ticketanicaDb.Eventos.Add(eventoDbModel);
         _ticketanicaDb.SaveChanges();
