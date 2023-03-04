@@ -102,7 +102,7 @@ public class EventoService : IEventoService
             throw new ArgumentException("No existe ninguna sesión Activa");
         if (evento.ImgEvento is { Length: > 0 })
         {
-            using var fileStream = new FileStream(img_path, FileMode.Create);
+            using var fileStream = new FileStream(img_path + evento.ImgEvento.FileName, FileMode.Create);
             evento.ImgEvento.CopyTo(fileStream);
         }
 
