@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.FileProviders;
 using ticketanica.DataLayer;
 using ticketanicav2.Dependencies;
 
@@ -44,7 +44,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseSession();
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

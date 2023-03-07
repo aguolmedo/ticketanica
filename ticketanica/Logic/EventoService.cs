@@ -16,7 +16,7 @@ public class EventoService : IEventoService
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private readonly string img_path = "/var/www/ticketanica/img/";
+    private readonly string img_path = "./wwwroot/images/";
 
     public EventoService(TicketanicaDbContext ticketanicaDb, IHttpContextAccessor httpContextAccessor)
     {
