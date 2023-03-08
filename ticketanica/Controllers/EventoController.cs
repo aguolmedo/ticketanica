@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using ticketanicav2.Helpers;
 using ticketanicav2.Logic.Interfaces;
 using Evento = ticketanicav2.Models.Evento;
 
@@ -46,7 +46,7 @@ public class EventoController : ControllerBase
         }
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public ActionResult<Evento> GetById(int id)
     {
         try
@@ -58,6 +58,27 @@ public class EventoController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    [HttpGet("{id}/imagen")]
+    public IActionResult GetImageById(int id)
+    {
+        try
+        {
+            var imageBytes = _eventoService.GetImageById(id);
+            
+            return File(imageBytes, MimeHelper.getMimeTypeFromBytes(imageBytes));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+
+
+
+
+
 
 
 }

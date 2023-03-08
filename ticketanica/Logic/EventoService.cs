@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using System.Net.Mime;
 using System.Security.Authentication;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using MimeMapping;
 using ticketanica.DataLayer;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
@@ -49,6 +51,20 @@ public class EventoService : IEventoService
         return listaEventos;
     }
 
+    public byte[] GetImgById(int idEvento)
+    {
+        var eventoDb = _ticketanicaDb.Eventos.FirstOrDefault(e => e.IdEvento == idEvento);
+
+        if (eventoDb is null)
+            throw new ArgumentException("No existe evento con ese Id");
+
+        var imagePath = Path.Combine(img_path, eventoDb.EventoImg);
+        if (!File.Exists(imagePath))
+            throw new FileNotFoundException("La imagen no se encuentra en la ruta especificada.");
+
+        return File.ReadAllBytes(imagePath);
+    }
+
     public Evento GetById(int id)
     {
         var eventoDb = _ticketanicaDb.Eventos
@@ -58,6 +74,25 @@ public class EventoService : IEventoService
         
         if (eventoDb is null)
             throw new ArgumentException("No existe evento con ese Id");
+        
+        if (!File.Exists(img_path + eventoDb.EventoImg))
+            throw new ArgumentException("El archivo de imagen del evento no existe.");
+        
+        using var imageStream = new FileStream(img_path + eventoDb.EventoImg, FileMode.Open, FileAccess.Read);
+        var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image_evento", eventoDb.EventoImg)
+        {
+            Headers = new HeaderDictionary()
+        };
+        var contentType = MimeUtility.GetMimeMapping(eventoDb.EventoImg);
+        
+        var contentDisposition = new ContentDisposition
+        {
+            FileName = eventoDb.EventoImg,
+            Inline = true
+        };
+        imgEvento.ContentDisposition = contentDisposition.ToString();
+
+        imgEvento.ContentType = contentType;
 
         var entradas = new Dictionary<string, Entrada>();
         foreach (var entrada in eventoDb.Entrada)
@@ -92,9 +127,29 @@ public class EventoService : IEventoService
             Organizador = new Organizador()
             {
                 Email = eventoDb.EmailOrganizador
-            }
+            },
+            ImgEvento = imgEvento
         };
     }
+
+    public byte[] GetImageById(int id)
+    {
+        var eventoDb = _ticketanicaDb.Eventos.FirstOrDefault(e => e.IdEvento == id);
+
+        if (eventoDb == null)
+            throw new ArgumentException("No existe evento con ese Id");
+
+        if (!File.Exists(img_path + eventoDb.EventoImg))
+            throw new ArgumentException("El archivo de imagen del evento no existe.");
+
+        using var imageStream = new FileStream(img_path + eventoDb.EventoImg, FileMode.Open, FileAccess.Read);
+        var memoryStream = new MemoryStream();
+        imageStream.CopyTo(memoryStream);
+
+        return memoryStream.ToArray(); // Devuelve la imagen en formato byte[]
+    }
+   
+    
 
     public int AddEvento(Evento evento)
     {

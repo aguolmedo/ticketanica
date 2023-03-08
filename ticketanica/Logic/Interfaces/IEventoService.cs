@@ -8,6 +8,8 @@ public interface IEventoService
 
     public Evento GetById(int id);
 
+    public byte[] GetImageById(int id);
+    
     public int AddEvento(Evento evento);
     
     public bool ModifyEvento(int idEvento);
