@@ -1,4 +1,6 @@
-﻿namespace ticketanicav2.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ticketanicav2.Models;
 
 public class Direccion
 {
@@ -12,13 +14,17 @@ public class Direccion
 
     public Direccion() {}
 
-    public string NombreCiudad { get; set; }
+    [MaxLength(24)]
+    public string NombreCiudad { get; init; }
+    
+    [MaxLength(24)]
+    public string NombreCalle { get; init; }
 
-    public string NombreCalle { get; set; }
+    [Range(0, int.MaxValue, ErrorMessage = "Debe ser un numero positivo. > 0 .")]
+    public int? NumeroCalle { get; init; }
 
-    public int? NumeroCalle { get; set; }
-
-    public string NombreLocal { get; set; }
+    [MaxLength(24)]
+    public string NombreLocal { get; init; }
     
     
 

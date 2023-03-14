@@ -1,20 +1,26 @@
-﻿namespace ticketanicav2.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using ticketanicav2.Helpers.CustomValidations;
+
+namespace ticketanicav2.Models;
 
 public class Evento
 {
-    public int? IdEvento { get; set; }
-    public string Nombre { get; set; }
+    public int? IdEvento { get; init; }
+    
+    public string Nombre { get; init; }
 
-    public string Artista { get; set; }
-    public Dictionary<string,Entrada>? Entradas { get; set; }
+    public string Artista { get; init; }
+    public Dictionary<string,Entrada>? Entradas { get; init; }
 
-    public Direccion Direccion { get; set; }
+    public Direccion Direccion { get; init; }
 
-    public int CapacidadMaxima { get; set; }
+    [Range(0,5000)]
+    public int CapacidadMaxima { get; init; }
 
     public Organizador? Organizador { get; set; }
     
-    public IFormFile ImgEvento {get; set;} 
+    [ValidarImagen]
+    public IFormFile ImgEvento {get; init;} 
 
     public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {

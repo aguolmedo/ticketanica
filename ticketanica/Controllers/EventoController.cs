@@ -46,7 +46,7 @@ public class EventoController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public ActionResult<Evento> GetById(int id)
     {
         try
@@ -59,7 +59,7 @@ public class EventoController : ControllerBase
         }
     }
     
-    [HttpGet("{id}/imagen")]
+    [HttpGet("{id:int}/imagen")]
     public IActionResult GetImageById(int id)
     {
         try
@@ -68,9 +68,9 @@ public class EventoController : ControllerBase
             
             return File(imageBytes, MimeHelper.getMimeTypeFromBytes(imageBytes));
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            return Problem(e.Message);
         }
     }
 
