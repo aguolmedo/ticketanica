@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using MimeMapping;
 using ticketanica.DataLayer;
+using ticketanicav2.Helpers;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
 using Entrada = ticketanicav2.Models.Entrada;
@@ -26,6 +27,32 @@ public class EventoService : IEventoService
         _ticketanicaDb = ticketanicaDb;
     }
 
+    public List<Evento> GetAll2()
+    {
+        var eventosDb = _ticketanicaDb.Eventos
+            .Include(d => d.IdDireccionNavigation)
+            .Include(u => u.EmailOrganizadorNavigation);
+
+        var listaEventos = new List<Evento>();
+
+        foreach (var evento in eventosDb)
+        {
+            var organizadorModel = new Organizador(evento.EmailOrganizadorNavigation.Email);
+            var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName,
+                evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
+                evento.IdDireccionNavigation.LocalName);
+            
+            var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
+            var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image",img_path + evento.EventoImg );
+            var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
+                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel,imgEvento);
+
+            listaEventos.Add(eventoModel);
+        }
+
+        return listaEventos;
+    }
+    
     public List<Evento> GetAll()
     {
         var eventosDb = _ticketanicaDb.Eventos
@@ -40,29 +67,32 @@ public class EventoService : IEventoService
             var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName,
                 evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
                 evento.IdDireccionNavigation.LocalName);
-            var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
-            var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image",img_path + evento.EventoImg );
-            var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
-                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel,imgEvento);
 
-            listaEventos.Add(eventoModel);
+            if (Directory.Exists((img_path + evento.EventoImg)))
+            {
+                var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
+                var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image", evento.EventoImg);
+                var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
+                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento);
+
+                listaEventos.Add(eventoModel);
+            }
+            else
+            {
+                var notFoundStream = new MemoryStream(Encoding.UTF8.GetBytes("Not Found"));
+                var imgEvento = new FormFile(notFoundStream, 0, notFoundStream.Length, "image", "Not Found")
+                    {
+                        Headers = new HeaderDictionary(),
+                        ContentType = "image/null"
+                    };
+                var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
+                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento);
+
+                listaEventos.Add(eventoModel);
+            }
         }
 
         return listaEventos;
-    }
-
-    public byte[] GetImgById(int idEvento)
-    {
-        var eventoDb = _ticketanicaDb.Eventos.FirstOrDefault(e => e.IdEvento == idEvento);
-
-        if (eventoDb is null)
-            throw new ArgumentException("No existe evento con ese Id");
-
-        var imagePath = Path.Combine(img_path, eventoDb.EventoImg);
-        if (!File.Exists(imagePath))
-            throw new FileNotFoundException("La imagen no se encuentra en la ruta especificada.");
-
-        return File.ReadAllBytes(imagePath);
     }
 
     public Evento GetById(int id)
