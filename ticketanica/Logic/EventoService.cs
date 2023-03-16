@@ -68,10 +68,14 @@ public class EventoService : IEventoService
                 evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
                 evento.IdDireccionNavigation.LocalName);
 
-            if (Directory.Exists((img_path + evento.EventoImg)))
+            if (File.Exists((img_path + evento.EventoImg)))
             {
                 var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
-                var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image", evento.EventoImg);
+                var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image", evento.EventoImg)
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = MimeUtility.GetMimeMapping(evento.EventoImg)
+                };
                 var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
                     Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento);
 
@@ -104,27 +108,33 @@ public class EventoService : IEventoService
         
         if (eventoDb is null)
             throw new ArgumentException("No existe evento con ese Id");
-        
-        if (!File.Exists(img_path + eventoDb.EventoImg))
-            throw new ArgumentException("El archivo de imagen del evento no existe.");
-        
-        using var imageStream = new FileStream(img_path + eventoDb.EventoImg, FileMode.Open, FileAccess.Read);
-        var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image_evento", eventoDb.EventoImg)
-        {
-            Headers = new HeaderDictionary()
-        };
-        var contentType = MimeUtility.GetMimeMapping(eventoDb.EventoImg);
-        
-        var contentDisposition = new ContentDisposition
-        {
-            FileName = eventoDb.EventoImg,
-            Inline = true
-        };
-        imgEvento.ContentDisposition = contentDisposition.ToString();
 
-        imgEvento.ContentType = contentType;
+
+        FormFile imgEvento;
+        if (File.Exists((img_path + eventoDb.EventoImg)))
+        {
+            var imageStream = new MemoryStream(File.ReadAllBytes(img_path + eventoDb.EventoImg));
+            imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image", eventoDb.EventoImg)
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = MimeUtility.GetMimeMapping(eventoDb.EventoImg)
+            };
+        }
+        else
+        {
+            var notFoundStream = new MemoryStream(Encoding.UTF8.GetBytes("Not Found"));
+            imgEvento = new FormFile(notFoundStream, 0, notFoundStream.Length, "image", "Not Found")
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/null"
+            };
+
+
+        }
+
 
         var entradas = new Dictionary<string, Entrada>();
+        
         foreach (var entrada in eventoDb.Entrada)
         {
             var entradaModel = new Entrada()
