@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("useradd")]
-    public ActionResult<string> AgregarUsuario(Organizador user) {
+    public ActionResult<string> AgregarUsuario([FromForm] Organizador user) {
         try
         {
             _usersService.RegistrarUsuario(user);
@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public ActionResult<string> IniciarSesion(Organizador user)
+    public ActionResult<string> IniciarSesion([FromForm] Organizador user)
     {
         try
         {

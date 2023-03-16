@@ -108,8 +108,7 @@ public class EventoService : IEventoService
         
         if (eventoDb is null)
             throw new ArgumentException("No existe evento con ese Id");
-
-
+        
         FormFile imgEvento;
         if (File.Exists((img_path + eventoDb.EventoImg)))
         {
@@ -128,11 +127,8 @@ public class EventoService : IEventoService
                 Headers = new HeaderDictionary(),
                 ContentType = "image/null"
             };
-
-
         }
-
-
+        
         var entradas = new Dictionary<string, Entrada>();
         
         foreach (var entrada in eventoDb.Entrada)
@@ -193,7 +189,7 @@ public class EventoService : IEventoService
 
     public int AddEvento(Evento evento)
     {
-        if (!_httpContextAccessor.HttpContext.Session.TryGetValue("usuario", out var value))
+        if (!_httpContextAccessor.HttpContext.Session.TryGetValue("usuario", out var usuarioSession))
             throw new ArgumentException("No existe ninguna sesión Activa");
         if (evento.ImgEvento is { Length: > 0 })
         {
@@ -201,10 +197,9 @@ public class EventoService : IEventoService
             evento.ImgEvento.CopyTo(fileStream);
         }
 
-        var userSession = Encoding.UTF8.GetString(value);
+        var userSession = Encoding.UTF8.GetString(usuarioSession);
         var userDb = _ticketanicaDb.Users.Find(userSession);
         
-
         var direccionDb = _ticketanicaDb.Direcciones.FirstOrDefault(d => 
                               d.CalleName == evento.Direccion.NombreCalle &&
                               d.CalleNro == evento.Direccion.NumeroCalle &&

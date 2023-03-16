@@ -10,8 +10,6 @@ public interface IUsersService
     public bool DeletearUsario(string mail);
 
     public bool IniciarSesion(Organizador user);
-
-    public bool ValidarUsuario(User user);
-
+    
     public string ResetearPassword();
 }

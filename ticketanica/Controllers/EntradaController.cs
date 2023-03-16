@@ -1,4 +1,6 @@
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
+using ticketanicav2.Helpers.CustomValidations;
 using ticketanicav2.Logic.Interfaces;
 
 namespace ticketanicav2.Controllers;
@@ -32,7 +34,7 @@ public class EntradaController : ControllerBase
     }
     
     [HttpPost("validar")]
-    public ActionResult<string> ValidarEntrada(int idEvento, string CodigoQr)
+    public ActionResult<string> ValidarEntrada( int idEvento, string CodigoQr)
     {
         try
         {

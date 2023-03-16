@@ -1,3 +1,4 @@
+using System.Text;
 using ticketanica.DataLayer;
 using ticketanicav2.Helpers;
 using ticketanicav2.Logic.Interfaces;
@@ -10,10 +11,13 @@ public class EntradaService : IEntradaService
 
     private readonly TicketanicaDbContext _ticketanicaDb;
 
-    public EntradaService(IEventoService eventoService, TicketanicaDbContext ticketanicaDb)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public EntradaService(IEventoService eventoService, TicketanicaDbContext ticketanicaDb, IHttpContextAccessor httpContextAccessor)
     {
         _ticketanicaDb = ticketanicaDb;
         _eventoService = eventoService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public bool GenerarEntrada(int idEvento)
@@ -47,15 +51,22 @@ public class EntradaService : IEntradaService
     {
         try
         {
+            if (!_httpContextAccessor.HttpContext.Session.TryGetValue("usuario", out var usuarioSession))
+                throw new ArgumentException("No existe ninguna sesión Activa");
+            
+            var userSession = Encoding.UTF8.GetString(usuarioSession);
+
             var evento = _eventoService.GetById(idEvento);
-        
+
+            if (evento.Organizador.Email != userSession)
+                throw new ArgumentException("Solo el organizador puede validar una entrada! ");
+            
             if (!evento.Entradas.ContainsKey(codigoQr)) return false;
        
             var entrada = evento.Entradas[codigoQr];
 
             var entradaDb = _ticketanicaDb.Entradas.Find(entrada.IdEntrada);
-
-
+            
             if (entradaDb.Usada) throw new ArgumentException("Acceso denegado - La entrada ya fue usada!");
             entradaDb.Usada = true;
 
