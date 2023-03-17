@@ -27,32 +27,6 @@ public class EventoService : IEventoService
         _ticketanicaDb = ticketanicaDb;
     }
 
-    public List<Evento> GetAll2()
-    {
-        var eventosDb = _ticketanicaDb.Eventos
-            .Include(d => d.IdDireccionNavigation)
-            .Include(u => u.EmailOrganizadorNavigation);
-
-        var listaEventos = new List<Evento>();
-
-        foreach (var evento in eventosDb)
-        {
-            var organizadorModel = new Organizador(evento.EmailOrganizadorNavigation.Email);
-            var direccionModel = new Direccion(evento.IdDireccionNavigation.CiudadName,
-                evento.IdDireccionNavigation.CalleName, Convert.ToInt32(evento.IdDireccionNavigation.CalleNro),
-                evento.IdDireccionNavigation.LocalName);
-            
-            var imageStream = new MemoryStream(File.ReadAllBytes(img_path + evento.EventoImg));
-            var imgEvento = new FormFile(imageStream, 0, imageStream.Length, "image",img_path + evento.EventoImg );
-            var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
-                Convert.ToInt32(evento.CapacidadMaxima), organizadorModel,imgEvento);
-
-            listaEventos.Add(eventoModel);
-        }
-
-        return listaEventos;
-    }
-    
     public List<Evento> GetAll()
     {
         var eventosDb = _ticketanicaDb.Eventos
@@ -77,7 +51,7 @@ public class EventoService : IEventoService
                     ContentType = MimeUtility.GetMimeMapping(evento.EventoImg)
                 };
                 var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
-                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento);
+                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento,evento.EventoFecha);
 
                 listaEventos.Add(eventoModel);
             }
@@ -90,7 +64,7 @@ public class EventoService : IEventoService
                         ContentType = "image/null"
                     };
                 var eventoModel = new Evento(evento.IdEvento, evento.EventoName, evento.ArtistaName, direccionModel,
-                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento);
+                    Convert.ToInt32(evento.CapacidadMaxima), organizadorModel, imgEvento,evento.EventoFecha);
 
                 listaEventos.Add(eventoModel);
             }

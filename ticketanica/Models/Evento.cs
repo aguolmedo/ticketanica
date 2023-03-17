@@ -20,7 +20,9 @@ public class Evento
     public Organizador? Organizador { get; set; }
     
     [ValidarImagen]
-    public IFormFile ImgEvento {get; init;} 
+    public IFormFile ImgEvento {get; init;}
+
+    public DateTime FechaEvento { get; init; }
 
     public Evento(string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador)
     {
@@ -32,7 +34,7 @@ public class Evento
         Organizador = organizador;
     }
     
-    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador, IFormFile imgEvento)
+    public Evento(int idEvento, string nombre, string artista, Direccion direccion, int capacidadMaxima, Organizador organizador, IFormFile imgEvento, DateTime fechaEvento)
     {
         IdEvento = idEvento;
         Artista = artista;
@@ -42,6 +44,7 @@ public class Evento
         Entradas = new Dictionary<string,Entrada>();
         Organizador = organizador;
         ImgEvento = imgEvento;
+        FechaEvento = fechaEvento;
     }
     
     public Evento() {}
