@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using ticketanicav2.Logic.Interfaces;
 using ticketanicav2.Models;
@@ -20,11 +21,11 @@ public class UserController : ControllerBase
         try
         {
             _usersService.RegistrarUsuario(user);
-            return Ok("Se registro un usuario (" + user.Email +") correctamente");
+            return Ok(JsonSerializer.Serialize($"Se registro un usuario (" + user.Email +") correctamente"));
         }
         catch (ArgumentException e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(JsonSerializer.Serialize(e.Message));
         }
     }
 
@@ -34,12 +35,12 @@ public class UserController : ControllerBase
         try
         {
             return _usersService.IniciarSesion(user) ? 
-                Ok("Se inicio sesion con el usuario: " + user.Email + " correctamente.") : 
-                Problem("ni puta idea q mierda pasó");
+                Ok(JsonSerializer.Serialize($"Login Ok {user.Email}")) : 
+                Problem(JsonSerializer.Serialize("ni puta idea q mierda pasó"));
         }
         catch (ArgumentException e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(JsonSerializer.Serialize(e.Message));
         }
     }
 }

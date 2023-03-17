@@ -1,7 +1,10 @@
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.Json;
 using ticketanicav2.Helpers.CustomValidations;
 using ticketanicav2.Logic.Interfaces;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ticketanicav2.Controllers;
 
@@ -24,7 +27,7 @@ public class EntradaController : ControllerBase
         try
         {
             if (_entradaService.GenerarEntrada(idEvento))
-                return Ok($"Se genero una entrada para el evento: {idEvento}, correctamente.");
+                return Ok(JsonSerializer.Serialize("Entrada Generada."));
             return BadRequest("No se pudo generar entradas, se alcanzo la capacidad máxima, SOLD OUT");
         }
         catch (Exception e)
