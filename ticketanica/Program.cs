@@ -49,6 +49,7 @@ app.UseCors(options =>
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
+    options.AllowCredentials();
 });
 
 app.UseSession();
