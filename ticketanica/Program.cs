@@ -29,7 +29,6 @@ builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".TicketanicaSession";
     options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
