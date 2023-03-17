@@ -30,6 +30,7 @@ builder.Services.AddSession(options =>
     options.Cookie.Name = ".TicketanicaSession";
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.None;
 });
 
 
