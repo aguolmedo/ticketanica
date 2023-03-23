@@ -34,9 +34,9 @@ public class UserController : ControllerBase
     {
         try
         {
-            return _usersService.IniciarSesion(user) ? 
-                Ok(JsonSerializer.Serialize($"Login Ok {user.Email}")) : 
-                Problem(JsonSerializer.Serialize("ni puta idea q mierda pasó"));
+            if (_usersService.IniciarSesion(user))
+                return Ok(JsonSerializer.Serialize($"Login Ok {user.Email}")); 
+            return Problem(JsonSerializer.Serialize("ni puta idea q mierda pasó"));
         }
         catch (ArgumentException e)
         {

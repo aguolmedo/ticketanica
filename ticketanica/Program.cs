@@ -31,6 +31,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 
@@ -49,7 +50,6 @@ app.UseCors(options =>
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
-    options.AllowCredentials();
 });
 
 app.UseSession();

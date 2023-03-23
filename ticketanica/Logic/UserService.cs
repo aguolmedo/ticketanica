@@ -40,7 +40,6 @@ public class UserService : IUsersService
             throw new ArgumentException("La contraseña no es correcta");
         
         _httpContextAccessor.HttpContext.Session.Set("usuario",Encoding.UTF8.GetBytes(usuarioDb.Email));
-        
         return true;
     }
 
